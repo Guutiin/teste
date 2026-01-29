@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha V2.1 - A Aurora de Ferro</title>
+    <title>Ficha V3.0 - Aurora de Ferro (AutoSave)</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -72,15 +72,13 @@
         input:focus, textarea:focus {
             border-color: #8b0000;
         }
-        /* Estilo específico para números com setinhas */
         input[type=number] {
-            -moz-appearance: textfield; /* Tenta padronizar */
+            -moz-appearance: textfield;
         }
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
-            opacity: 1; /* Garante que as setas apareçam no Chrome/Edge */
+            opacity: 1;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -121,24 +119,46 @@
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
+        
+        /* Botões de Controle */
+        .control-panel {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            border: none;
+            color: #fff;
+            transition: 0.2s;
+        }
+        .btn-save { background-color: #2e7d32; }
+        .btn-save:hover { background-color: #1b5e20; }
+        
+        .btn-load { background-color: #1565c0; }
+        .btn-load:hover { background-color: #0d47a1; }
+        
+        .btn-clear { background-color: #8b0000; }
+        .btn-clear:hover { background-color: #5c0000; }
+
         .footer {
-            margin-top: 50px;
+            margin-top: 20px;
             text-align: center;
             font-size: 0.7em;
             color: #555;
-            border-top: 1px solid #333;
-            padding-top: 20px;
         }
+        
         @media (max-width: 700px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .vitals-grid { grid-template-columns: repeat(2, 1fr); }
             .magic-section { grid-template-columns: 1fr; }
-        }
-        @media print {
-            body { background-color: #fff; color: #000; }
-            .sheet-container { border: 2px solid #000; background-color: #fff; box-shadow: none; max-width: 100%; padding: 10px; }
-            input, textarea { border: 1px solid #000; background: #fff; color: #000; }
-            h1 { border-color: #000; color: #000; }
         }
     </style>
 </head>
@@ -150,71 +170,71 @@
         <div class="row">
             <div class="field">
                 <label>NOME DO FUNCIONÁRIO:</label>
-                <input type="text">
+                <input type="text" id="nome_char">
             </div>
             <div class="field">
                 <label>JOGADOR:</label>
-                <input type="text">
+                <input type="text" id="nome_player">
             </div>
         </div>
 
         <div class="row">
             <div class="field">
-                <label>PROFISSÃO (Classe) :</label>
-                <input type="text">
+                <label>PROFISSÃO (Classe):</label>
+                <input type="text" id="classe">
             </div>
             <div class="field">
-                <label>NÍVEL :</label>
-                <input type="text">
+                <label>NÍVEL / XP:</label>
+                <input type="text" id="nivel">
             </div>
         </div>
 
         <div class="field" style="margin-bottom: 20px;">
             <label>CONCEITO :</label>
-            <input type="text">
+            <input type="text" id="conceito">
         </div>
 
         <h2>📊 ATRIBUTOS (MODIFICADORES)</h2>
         <div class="stats-grid">
-            <div class="stat-box"><label>FOR</label><input type="number" value="0"></div>
-            <div class="stat-box"><label>DES</label><input type="number" value="0"></div>
-            <div class="stat-box"><label>CON</label><input type="number" value="0"></div>
-            <div class="stat-box"><label>INT</label><input type="number" value="0"></div>
-            <div class="stat-box"><label>SAB</label><input type="number" value="0"></div>
-            <div class="stat-box"><label>CAR</label><input type="number" value="0"></div>
+            <div class="stat-box"><label>FOR</label><input type="number" id="attr_for" value="0"></div>
+            <div class="stat-box"><label>DES</label><input type="number" id="attr_des" value="0"></div>
+            <div class="stat-box"><label>CON</label><input type="number" id="attr_con" value="0"></div>
+            <div class="stat-box"><label>INT</label><input type="number" id="attr_int" value="0"></div>
+            <div class="stat-box"><label>SAB</label><input type="number" id="attr_sab" value="0"></div>
+            <div class="stat-box"><label>CAR</label><input type="number" id="attr_car" value="0"></div>
         </div>
 
         <h2>❤️ SINAIS VITAIS & COMBATE</h2>
         <div class="vitals-grid">
             <div class="field vital-box">
                 <label>HP ATUAL / MÁX</label>
-                <input type="text">
+                <input type="text" id="hp_total">
             </div>
             <div class="field vital-box">
                 <label>HP TEMPORÁRIO</label>
-                <input type="number">
+                <input type="number" id="hp_temp" value="0">
             </div>
             <div class="field vital-box">
                 <label>CLASSE ARMADURA (CA)</label>
-                <input type="number">
+                <input type="number" id="ca">
             </div>
             <div class="field vital-box">
                 <label>DESLOCAMENTO</label>
-                <input type="text">
+                <input type="text" id="deslocamento">
             </div>
         </div>
         <div class="row" style="margin-top: 15px;">
              <div class="field vital-box">
                 <label>INICIATIVA</label>
-                <input type="number" value="0">
+                <input type="number" id="iniciativa" value="0">
             </div>
             <div class="field vital-box">
                 <label>PROFICIÊNCIA</label>
-                <input type="number" value="2">
+                <input type="number" id="proficiencia" value="2">
             </div>
              <div class="field vital-box">
                 <label>DADOS DE VIDA</label>
-                <input type="text">
+                <input type="text" id="dados_vida">
             </div>
         </div>
 
@@ -222,38 +242,136 @@
         <div class="magic-section">
             <div class="field small-textarea">
                 <label>TRUQUES (Cantrips):</label>
-                <textarea></textarea>
+                <textarea id="truques"></textarea>
             </div>
             <div class="field small-textarea">
                 <label>ESPAÇOS DE MAGIA (Slots):</label>
-                <textarea></textarea>
+                <textarea id="slots"></textarea>
             </div>
         </div>
         <div class="field" style="margin-top: 15px;">
             <label>MAGIAS PREPARADAS / CONHECIDAS:</label>
-            <textarea></textarea>
+            <textarea id="magias"></textarea>
         </div>
 
         <h2>⚔️ ARSENAL & MOCHILA</h2>
         <div class="field">
             <label>ARMAS E ATAQUES:</label>
-            <textarea style="min-height: 120px;"></textarea>
+            <textarea style="min-height: 120px;" id="armas"></textarea>
         </div>
         <div class="field">
             <label>INVENTÁRIO GERAL:</label>
-            <textarea></textarea>
+            <textarea id="inventario"></textarea>
         </div>
 
         <h2>📝 TALENTOS & ANOTAÇÕES</h2>
         <div class="field">
             <label>HABILIDADES DE CLASSE, RAÇA E TALENTOS:</label>
-            <textarea></textarea>
+            <textarea id="habilidades"></textarea>
+        </div>
+
+        <div class="control-panel">
+            <button class="btn btn-save" onclick="downloadSheet()">💾 BAIXAR FICHA (Backup)</button>
+            <button class="btn btn-load" onclick="document.getElementById('fileInput').click()">📂 CARREGAR FICHA</button>
+            <input type="file" id="fileInput" style="display: none;" onchange="loadSheet(this)">
+            <button class="btn btn-clear" onclick="resetSheet()">⚠️ LIMPAR TUDO</button>
         </div>
 
         <div class="footer">
-            Guilda Aurora de Ferro - Documento Oficial V2.1
+            Guilda Aurora de Ferro - Sistema Integrado V3.0
+            <br><span id="status-msg" style="color: #4caf50; font-size: 0.9em;"></span>
         </div>
     </div>
 
-</body>
-</html>
+    <script>
+        // Seleciona todos os inputs e textareas
+        const inputs = document.querySelectorAll('input, textarea');
+        const statusMsg = document.getElementById('status-msg');
+
+        // 1. CARREGAR DADOS DO NAVEGADOR (AUTO-LOAD)
+        function loadFromBrowser() {
+            inputs.forEach(input => {
+                if (input.id) { // Só carrega se tiver ID
+                    const savedValue = localStorage.getItem('aurora_' + input.id);
+                    if (savedValue !== null) {
+                        input.value = savedValue;
+                    }
+                }
+            });
+        }
+
+        // 2. SALVAR DADOS NO NAVEGADOR (AUTO-SAVE)
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                if (input.id) {
+                    localStorage.setItem('aurora_' + input.id, input.value);
+                    showStatus("Salvando...");
+                }
+            });
+        });
+
+        function showStatus(msg) {
+            statusMsg.innerText = msg;
+            setTimeout(() => { statusMsg.innerText = ""; }, 1000);
+        }
+
+        // 3. BAIXAR FICHA (DOWNLOAD JSON)
+        function downloadSheet() {
+            let data = {};
+            inputs.forEach(input => {
+                if (input.id) data[input.id] = input.value;
+            });
+            
+            // Pega o nome do personagem para o arquivo
+            const nomeChar = document.getElementById('nome_char').value || "Ficha_Sem_Nome";
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${nomeChar}_AuroraDeFerro.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // 4. CARREGAR FICHA (UPLOAD JSON)
+        function loadSheet(inputElement) {
+            const file = inputElement.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    // Preenche os campos
+                    for (const key in data) {
+                        const el = document.getElementById(key);
+                        if (el) {
+                            el.value = data[key];
+                            // Atualiza também o AutoSave
+                            localStorage.setItem('aurora_' + key, data[key]);
+                        }
+                    }
+                    alert("Ficha carregada com sucesso!");
+                } catch (err) {
+                    alert("Erro ao ler o arquivo. Tem certeza que é uma ficha válida?");
+                }
+            };
+            reader.readAsText(file);
+            inputElement.value = ''; // Reseta o input file
+        }
+
+        // 5. LIMPAR TUDO
+        function resetSheet() {
+            if (confirm("Tem certeza? Isso vai apagar tudo desta ficha!")) {
+                inputs.forEach(input => {
+                    input.value = "";
+                    if (input.type === 'number') input.value = "0";
+                    localStorage.removeItem('aurora_' + input.id);
+                });
+                alert("Ficha limpa.");
+            }
+        }
+
+        // Inicia carregando os dados salv
